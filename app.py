@@ -31,7 +31,7 @@ def data():
 def grph():
     st.title("Stock price's graph")
     stk_data = pd.read_csv('stk_data.csv')
-    prices = stk_data['Close'].values
+    prices = pd.DataFrame(stk_data['Close'],stk_data['Date'])
     st.line_chart(prices)
 
 
