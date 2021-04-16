@@ -10,6 +10,33 @@ MENU_OPTIONS = [
     'visualize results',
     'about'
 ]
+stks = {
+    'Facebook':'FB',
+    'Apple':'AAPL',
+    'Tesla':'TSLA',
+    'Amazon':'AMZN',
+    'Google':'GOOG',
+    'Reliance':'RELI',
+    'Microsoft Corporation':'MSFT',
+    'Tata Motors Limited':'TTM',
+    'Netflix, Inc.':'NFLX',
+    'NVIDIA Corporation':'NVDA',
+    'Wipro Limited':'WIPRO.NS',
+    'Dogecoin USD':'DOGE-USD',
+    'EthereumClassic USD':'ETC-USD',
+    'BitcoinCash USD':'BCH-USD',
+    'QuantumScape Corporation':'QS',
+    'DraftKings Inc.':'DKING',
+    'Virgin Galactic Holdings, Inc.':'SPCE',
+    'Dogecoin INR':'DOGE-INR',
+    'Esports Technologies, Inc. Common Stock':'EBET',
+    'TuSimple Holdings Inc. Class A Common Stock':'TSP',
+    'The Toro Company':'TTC',
+    'Churchill Capital Corp IV':'CCIV',
+    'Plug Power Inc.':'PLUG',
+    'Singapore Telecommunications Limited':'Z74.SI',
+    'FuelCell Energy, Inc.':'FCEL',
+    }
 start = dt.datetime(2013, 1, 1)
 end = dt.datetime(2021, 4, 15)
 

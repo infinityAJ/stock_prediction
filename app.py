@@ -15,8 +15,10 @@ def home():
 
 
 def stck():
-    stk_tik = st.text_input('enter Stock ticker value')
-    if len(stk_tik) > 1:
+    stk_tik = stks[st.selectbox(
+        'enter Stock ticker value',
+        tuple(stks.keys()))]
+    if stk_tik:
         stk_data = web.DataReader(stk_tik, 'yahoo', start, end)
         stk_data.to_csv('stk_data.csv',index=True)
         st.success("stock ticker recorded, you may go to 'view data' page now")
