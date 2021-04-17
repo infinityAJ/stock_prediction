@@ -2,7 +2,7 @@ import streamlit as st
 from config import *
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.express as px
 import pandas_datareader as web
 
 st.sidebar.title(PROJECT_NAME)
@@ -11,30 +11,42 @@ chart_data = pd.DataFrame(np.random.randn(50, 3), columns=['a', 'b', 'c'])
 
 
 def home():
-    pass
+    st.title('Stock Smart')
+    st.subheader('Featuring future stock price prediction')
+    st.write("""The project Stock Smart uses stock price prediction model to
+    predict future stock prices of a give company.""")
+    st.write("""this model uses a Recurrent Neural Network to predict next step
+    of a time-series data which in our case is history of a company's stock
+    prices.""")
 
 
 def stck():
-    stk_tik = stks[st.selectbox(
-        'enter Stock ticker value',
-        tuple(stks.keys()))]
+    company = st.selectbox(
+        'Select a company',
+        tuple(stks.keys()))
+    stk_tik = stks[company]
     if stk_tik:
         stk_data = web.DataReader(stk_tik, 'yahoo', start, end)
+        stk_data[company] = 0
         stk_data.to_csv('stk_data.csv',index=True)
         st.success("stock ticker recorded, you may go to 'view data' page now")
 
 
 def data():
-    st.title("Stock's raw data")
     stk_data = pd.read_csv('stk_data.csv')
-    st.table(stk_data)
+    st.title(f"{stk_data.columns[-1]} stock's raw data")
+    st.header('')
+    stk_data = stk_data.drop(stk_data.columns[-1], axis=1)
+    st.write(stk_data)
 
 
 def grph():
-    st.title("Stock price's graph")
     stk_data = pd.read_csv('stk_data.csv')
-    prices = stk_data['Close'].values
-    st.line_chart(prices)
+    st.title(f"{stk_data.columns[-1]} stock price's graph")
+    st.header('')
+    fig = px.line(data_frame=stk_data, x='Date', y='Close',
+                  labels={'Close':'Price in $'})
+    st.plotly_chart(fig)
 
 
 def predict():

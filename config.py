@@ -38,7 +38,7 @@ stks = {
     'FuelCell Energy, Inc.':'FCEL',
     }
 start = dt.datetime(2013, 1, 1)
-end = dt.datetime(2021, 4, 15)
+end = dt.datetime.now()
 
 """def view():
     st.title("view raw data")
