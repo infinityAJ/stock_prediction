@@ -5,6 +5,7 @@ import numpy as np
 import plotly.express as px
 import pandas_datareader as web
 from model import Model
+from tensorflow import keras
 
 st.sidebar.title(PROJECT_NAME)
 choice = st.sidebar.radio("Project Menu", MENU_OPTIONS)
@@ -54,17 +55,20 @@ def predict():
     st.write('Reading the data and pre-processing it.')
     nn = Model()
     st.write('Creating Neural Network')
-    nn.create()
+    seq = nn.create()
+    seq.save('stock_smart')
     st.write('Training the neural network using the data')
     nn.predict()
     st.write('Calculating the results')
-    res = nn.results()
-    st.write(res['r2'])
-    st.write(res['prediction'])
 
 
 def rslt():
-    pass
+    seq = keras.models.load_model('stock_smart')
+    nn = Model()
+    nn.predict(seq)
+    res = nn.results()
+    st.write(res['r2'])
+    st.write(res['prediction'])
 
 
 def about():

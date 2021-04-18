@@ -55,14 +55,16 @@ class Model:
     self.model.add(Dense(units=1))
     self.model.compile(optimizer='adam', loss='mean_squared_error')
     self.model.fit(self.x_train, self.y_train, epochs=25, batch_size=32)
+    return self.model
     
-  def predict(self):
+  def predict(self, model):
+    self.model = model
     self.predicted_prices = self.model.predict(self.x_test)
     self.predicted_prices = self.scaler.inverse_transform(self.predicted_prices)
 
   def plotting(self):
-    plt.plot(actual_prices, color = "black", label=f"Actual {company} price")
-    plt.plot(predicted_prices, color='green', label=f'Predicted {company} prices')
+    plt.plot(self.actual_prices, color = "black", label=f"Actual {company} price")
+    plt.plot(self.predicted_prices, color='green', label=f'Predicted {company} prices')
     plt.title(f"{company} Share Price")
     plt.xlabel('Time')
     plt.ylabel(f'{company} Share Price')
