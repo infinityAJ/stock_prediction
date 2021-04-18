@@ -85,6 +85,7 @@ def predict():
     st.success('Please head to the results page to see your results')
 
 def rslt():
+    conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
     cur.execute('select path from models where tik=:stk', stk_tik)
     path = cur.fetchall()[0][0]
