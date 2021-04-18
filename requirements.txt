@@ -3,5 +3,6 @@ keras
 matplotlib
 pandas
 numpy
+plotly
 scikit-learn
 pandas-datareader
