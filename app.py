@@ -59,7 +59,7 @@ def predict():
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
     cur.execute('select path from models where tik=:stk', stk_tik)
-    path = cur.fetchall()[0][1]
+    path = cur.fetchall()[0][0]
     seq = keras.models.load_model(path)
 ##    except Exception as e:
 ##        print(e)
