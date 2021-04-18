@@ -58,8 +58,7 @@ def predict():
     seq = nn.create()
     seq.save('stock_smart')
     st.write('Training the neural network using the data')
-    nn.predict()
-    st.write('Calculating the results')
+    st.success('Please head to the results page to see your results')
 
 
 def rslt():
