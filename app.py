@@ -61,7 +61,8 @@ def predict():
         cur.execute('select path from models where tik=:stk', stk_tik)
         path = cur.fetchall()[0][1]
         seq = keras.models.load_model(path)
-    except:
+    except Exception as e:
+        print(e)
         seq = nn.create()
         seq.save('stock_smart')
     st.success('Please head to the results page to see your results')
