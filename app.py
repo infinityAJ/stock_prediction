@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import pandas_datareader as web
+from model import Model
 
 st.sidebar.title(PROJECT_NAME)
 choice = st.sidebar.radio("Project Menu", MENU_OPTIONS)
@@ -50,7 +51,16 @@ def grph():
 
 
 def predict():
-    pass
+    st.write('Reading the data and pre-processing it.')
+    nn = Model()
+    st.write('Creating Neural Network')
+    nn.create()
+    st.write('Training the neural network using the data')
+    nn.predict()
+    nn.write('Calculating the results')
+    res = nn.results()
+    st.write(res['r2'])
+    st.write(res['prediction'])
 
 
 def rslt():

@@ -4,86 +4,80 @@ import pandas as pd
 import pandas_datareader as web
 import datetime as dt
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 
-company = 'FB'
 
-start = dt.datetime(2012,1,1)
-end = dt.datetime(2020,1,1)
+class Model:
+  def __init__(self):
+    stk_data = pd.read_csv('stk_data.csv')
+    self.data, self.test_data = train_test_split(
+      stk_data, test_size=.2, shuffle=False)
+    self.scaler = MinMaxScaler(feature_range=(0,1))
+    self.scaled_data = self.scaler.fit_transform(
+      self.data['Close'].values.reshape(-1,1))
+    prediction_days = 60
+    self.x_train = []
+    self.y_train = []
+    for x in range(prediction_days, len(self.scaled_data)):
+      self.x_train.append(self.scaled_data[x-prediction_days:x, 0])
+      self.y_train.append(self.scaled_data[x, 0])
+    self.x_train, self.y_train = np.array(self.x_train), np.array(self.y_train)
+    self.x_train = np.reshape(
+      self.x_train, (self.x_train.shape[0], self.x_train.shape[1], 1))
+    #test data preparation
+    self.actual_prices = self.test_data['Close'].values
+    self.total_dataset = pd.concat(
+      (self.data['Close'], self.test_data['Close']), axis=0)
+    self.model_inputs = self.total_dataset[
+      len(self.total_dataset) - len(self.test_data) - prediction_days:].values
+    self.model_inputs = self.model_inputs.reshape(-1,1)
+    self.model_inputs = self.scaler.transform(self.model_inputs)
+    self.x_test = []
+    for x in range(prediction_days, len(self.model_inputs)):
+      self.x_test.append(self.model_inputs[x-prediction_days:x, 0])
+    self.x_test = np.array(self.x_test)
+    self.x_test = np.reshape(
+      self.x_test, (self.x_test.shape[0], self.x_test.shape[1], 1))
+    return
 
-data = web.DataReader(company, 'yahoo', start, end)
+  def create(self):
+    self.model = Sequential()
+    self.model.add(LSTM(units=50, return_sequences=True, input_shape=(
+      self.x_train.shape[1], 1)))
+    self.model.add(Dropout(0.2))
+    self.model.add(LSTM(units=50, return_sequences=True))
+    self.model.add(Dropout(0.2))
+    self.model.add(LSTM(units=50))
+    self.model.add(Dropout(0.2))
+    self.model.add(Dense(units=1))
+    self.model.compile(optimizer='adam', loss='mean_squared_error')
+    self.model.fit(self.x_train, self.y_train, epochs=25, batch_size=32)
+    
+  def predict(self):
+    self.predicted_prices = self.model.predict(self.x_test)
+    self.predicted_prices = self.scaler.inverse_transform(self.predicted_prices)
 
-scaler = MinMaxScaler(feature_range=(0,1))
-scaled_data = scaler.fit_transform(data['Close'].values.reshape(-1,1))
+  def plotting(self):
+    plt.plot(actual_prices, color = "black", label=f"Actual {company} price")
+    plt.plot(predicted_prices, color='green', label=f'Predicted {company} prices')
+    plt.title(f"{company} Share Price")
+    plt.xlabel('Time')
+    plt.ylabel(f'{company} Share Price')
+    plt.legend()
+    plt.show()
 
-prediction_days = 60
-x_train = []
-y_train = []
-
-for x in range(prediction_days, len(scaled_data)):
-  x_train.append(scaled_data[x-prediction_days:x, 0])
-  y_train.append(scaled_data[x, 0])
-
-x_train, y_train = np.array(x_train), np.array(y_train)
-
-x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-
-model = Sequential()
-model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-model.add(Dropout(0.2))
-model.add(LSTM(units=50, return_sequences=True))
-model.add(Dropout(0.2))
-model.add(LSTM(units=50))
-model.add(Dropout(0.2))
-model.add(Dense(units=1))
-
-model.compile(optimizer='adam', loss='mean_squared_error')
-
-model.fit(x_train, y_train, epochs=25, batch_size=32)
-
-test_start = dt.datetime(2020,1,1)
-test_end = dt.datetime.now()
-
-test_data = web.DataReader(company, 'yahoo', test_start, test_end)
-
-actual_prices = test_data['Close'].values
-
-total_dataset = pd.concat((data['Close'], test_data['Close']), axis=0)
-
-model_inputs = total_dataset[len(total_dataset) - len(test_data) - prediction_days:].values
-
-model_inputs = model_inputs.reshape(-1,1)
-model_inputs = scaler.transform(model_inputs)
-
-x_test = []
-
-for x in range(prediction_days, len(model_inputs)):
-  x_test.append(model_inputs[x-prediction_days:x, 0])
-
-x_test = np.array(x_test)
-x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
-
-predicted_prices = model.predict(x_test)
-
-predicted_prices = scaler.inverse_transform(predicted_prices)
-
-plt.plot(actual_prices, color = "black", label=f"Actual {company} price")
-plt.plot(predicted_prices, color='green', label=f'Predicted {company} prices')
-plt.title(f"{company} Share Price")
-plt.xlabel('Time')
-plt.ylabel(f'{company} Share Price')
-plt.legend()
-plt.show()
-
-real_data = [model_inputs[len(model_inputs)+1-prediction_days:len(model_inputs+1), 0]]
-
-real_data = np.array(real_data)
-real_data = np.reshape(real_data, (real_data.shape[0], real_data.shape[1], 1))
-
-prediction = model.predict(real_data)
-prediction = scaler.inverse_transform(prediction)
-print(f"Prediction: {prediction}")
-
-from sklearn.metrics import r2_score
-print(r2_score(actual_prices, predicted_prices))
+  def results(self):
+    prediction_days = 60
+    self.real_data = [
+      self.model_inputs[
+        len(self.model_inputs)+1-prediction_days:len(self.model_inputs+1), 0]]
+    self.real_data = np.array(self.real_data)
+    self.real_data = np.reshape(
+      self.real_data, (self.real_data.shape[0], self.real_data.shape[1], 1))
+    prediction = self.model.predict(self.real_data)
+    prediction = self.scaler.inverse_transform(prediction)
+    r2 = r2_score(self.actual_prices, self.predicted_prices)
+    return {'r2': r2,'prediction': prediction}
