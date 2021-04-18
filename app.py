@@ -52,19 +52,25 @@ def predict():
     stk_data = pd.read_csv('stk_data.csv')
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
+    st.header('')
+    st.header('creating and training the neural network')
+    bar = st.progress(0)
     st.write('Creating a Neural Network')
+    bar.progress(10)
     nn = Model()
+    bar.progress(20)
     st.write('Training the Neural Network')
-    #try:
-    conn = sql.connect('stock_smart.db')
-    cur = conn.cursor()
-    cur.execute('select path from models where tik=:stk', stk_tik)
-    path = cur.fetchall()[0][0]
-    seq = keras.models.load_model(path)
-##    except Exception as e:
-##        print(e)
-##        seq = nn.create()
-##        seq.save('stock_smart')
+    bar.progress(30)
+    try:
+        conn = sql.connect('stock_smart.db')
+        cur = conn.cursor()
+        cur.execute('select path from models where tik=:stk', stk_tik)
+        path = cur.fetchall()[0][0]
+        seq = keras.models.load_model(path)
+    except Exception as e:
+        seq = nn.create()
+        seq.save('stock_smart')
+    bar.progress(100)
     st.success('Please head to the results page to see your results')
 
 def rslt():
