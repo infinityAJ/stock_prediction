@@ -55,9 +55,11 @@ def predict():
     st.write('Reading the data and pre-processing it.')
     nn = Model()
     st.write('Creating Neural Network')
-    seq = nn.create()
-    seq.save('stock_smart')
-    st.write('Training the neural network using the data')
+    try:
+        seq = keras.models.load_model('stock_smart')
+    except OSError:
+        seq = nn.create()
+        seq.save('stock_smart')
     st.success('Please head to the results page to see your results')
 
 
