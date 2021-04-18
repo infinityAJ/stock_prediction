@@ -85,6 +85,8 @@ def predict():
     st.success('Please head to the results page to see your results')
 
 def rslt():
+    stk_data = pd.read_csv('stk_data.csv')
+    stk_tik = {'stk': stks[stk_data.columns[-1]]}
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
     cur.execute('select path from models where tik=:stk', stk_tik)
