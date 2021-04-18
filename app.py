@@ -20,6 +20,7 @@ def home():
     st.write("""this model uses a Recurrent Neural Network to predict next step
     of a time-series data which in our case is history of a company's stock
     prices.""")
+    st.header('there is a change.')
 
 def stck():
     company = st.selectbox(
