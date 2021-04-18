@@ -7,6 +7,7 @@ import pandas_datareader as web
 from model import Model
 from tensorflow import keras
 import sqlite3 as sql
+import time
 
 st.sidebar.title(PROJECT_NAME)
 choice = st.sidebar.radio("Project Menu", MENU_OPTIONS)
@@ -55,21 +56,29 @@ def predict():
     st.header('')
     st.header('creating and training the neural network')
     bar = st.progress(0)
+    time.sleep(0.1)
     st.write('Creating a Neural Network')
     bar.progress(10)
+    time.sleep(0.1)
     nn = Model()
     bar.progress(20)
+    time.sleep(0.1)
     st.write('Training the Neural Network')
     bar.progress(30)
+    time.sleep(0.1)
     try:
         conn = sql.connect('stock_smart.db')
         bar.progress(40)
+        time.sleep(0.1)
         cur = conn.cursor()
         bar.progress(50)
+        time.sleep(0.1)
         cur.execute('select path from models where tik=:stk', stk_tik)
         bar.progress(60)
+        time.sleep(0.1)
         path = cur.fetchall()[0][0]
         bar.progress(70)
+        time.sleep(0.1)
         seq = keras.models.load_model(path)
         bar.progress(80)
     except Exception as e:
