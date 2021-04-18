@@ -94,6 +94,12 @@ def rslt():
     seq = keras.models.load_model(path)
     nn = Model()
     nn.predict(seq)
+    df = pd.DataFrame()
+    df['actual'] = nn.actual_prices
+    df['predicted'] = nn.predicted_prices
+    df['Date'] = stk_data['Date']
+    fig = px.line(data_frame=df, x='Date', y=df.columns[1:])
+    st.plotly_chart(fig)
     res = nn.results()
     st.write(res['r2'])
     st.write(res['prediction'])
