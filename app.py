@@ -63,10 +63,15 @@ def predict():
     bar.progress(30)
     try:
         conn = sql.connect('stock_smart.db')
+        bar.progress(40)
         cur = conn.cursor()
+        bar.progress(50)
         cur.execute('select path from models where tik=:stk', stk_tik)
+        bar.progress(60)
         path = cur.fetchall()[0][0]
+        bar.progress(70)
         seq = keras.models.load_model(path)
+        bar.progress(80)
     except Exception as e:
         seq = nn.create()
         seq.save('stock_smart')
