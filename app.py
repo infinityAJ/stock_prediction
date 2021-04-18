@@ -57,7 +57,7 @@ def predict():
     nn.create()
     st.write('Training the neural network using the data')
     nn.predict()
-    nn.write('Calculating the results')
+    st.write('Calculating the results')
     res = nn.results()
     st.write(res['r2'])
     st.write(res['prediction'])
