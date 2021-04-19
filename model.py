@@ -4,6 +4,7 @@ import pandas as pd
 import pandas_datareader as web
 import datetime as dt
 import plotly.express as px
+import plotly.graph_objects as go
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
@@ -66,15 +67,13 @@ class Model:
   def plotting(self):
     data = pd.DataFrame()
     data['Date'] = self.test_data['Date']
-    data['prices'] = self.actual_prices
-    data['state'] = 'actual'
-    predicted = pd.DataFrame()
-    predicted['Date'] = self.test_data['Date']
-    data['prices'] = self.predicted_prices
-    data['state'] = 'predicted'
-    data = data.append(predicted, ignore_index=True)
-    #fig = px.line(data_frame = data, x='Date', y='prices', line_group='state', color='state')
-    return data
+    data['actual'] = self.actual_prices
+    data['pridection'] = self.predicted_prices
+    trace1 = go.Scatter(x=data.Date, y=data.actual, text='actual prices')
+    trace2 = go.Scatter(x=data.Date, y=data.prediction, text='predicted prices')
+    figure = [trace1, trace2]
+    fig = {'data':figure}
+    return fig
 
   def results(self):
     prediction_days = 60
