@@ -72,13 +72,12 @@ def predict():
     nn.predict(seq)
     d = {
         'actual':nn.actual_prices,
-        'predicted':nn.predicted_prices,
-        'Date':stk_data['Date']
+        'predicted':nn.predicted_prices
     }
     df = pd.DataFrame(data=d)
-    fig1 = px.line(data_frame=df, x='Date', y='actual')
+    fig1 = px.line(data_frame=df, y='actual')
     st.plotly_chart(fig)
-    fig2 = px.line(data_frame=df, x='Date', y='predicted')
+    fig2 = px.line(data_frame=df, y='predicted')
     st.plotly_chart(fig)
 
     res = nn.results()
