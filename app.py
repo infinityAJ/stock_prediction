@@ -82,7 +82,7 @@ def predict():
     st.write(res['r2'])
     st.write(res['prediction'])
     bar.progress(100)
-    db_data = (dt.datetime.now, stk_tik['stk'], res['r2'], res['prediction'])
+    db_data = (dt.datetime.now(), stk_tik['stk'], res['r2'], res['prediction'])
     cur.execute('insert into history values(?,?,?,?)', db_data)
     st.success('Please head to the results page to see your results')
 
