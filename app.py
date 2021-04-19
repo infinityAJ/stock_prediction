@@ -78,7 +78,7 @@ def predict():
     fig2 = px.line(data_frame=df, y='predicted')
     st.plotly_chart(fig2)
     fig3 = nn.plotting()
-    st.write(fig3)
+    st.plotly_chart(fig3)
 
     res = nn.results()
     st.write(res['r2'])
