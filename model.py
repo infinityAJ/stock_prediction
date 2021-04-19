@@ -68,7 +68,7 @@ class Model:
     data = pd.DataFrame()
     data['Date'] = self.test_data['Date']
     data['actual'] = self.actual_prices
-    data['pridection'] = self.predicted_prices
+    data['prediction'] = self.predicted_prices
     trace1 = go.Scatter(x=data.Date, y=data.actual, text='actual prices')
     trace2 = go.Scatter(x=data.Date, y=data.prediction, text='predicted prices')
     figure = [trace1, trace2]
