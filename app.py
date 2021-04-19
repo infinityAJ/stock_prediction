@@ -52,57 +52,47 @@ def grph():
 def predict():
     stk_data = pd.read_csv('stk_data.csv')
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
+    
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
     st.header('')
     st.header('creating and training the neural network')
     bar = st.progress(0)
-    time.sleep(0.1)
-    st.write('Creating a Neural Network')
-    bar.progress(10)
-    time.sleep(0.1)
+    time.sleep(1)
+    
     nn = Model()
-    bar.progress(20)
-    time.sleep(0.1)
     st.write('Training the Neural Network')
-    bar.progress(30)
-    time.sleep(0.1)
+    
     conn = sql.connect('stock_smart.db')
-    bar.progress(40)
-    time.sleep(0.1)
     cur = conn.cursor()
-    bar.progress(50)
-    time.sleep(0.1)
     cur.execute('select path from models where tik=:stk', stk_tik)
-    bar.progress(60)
-    time.sleep(0.1)
     path = cur.fetchall()[0][0]
+    
     bar.progress(70)
-    time.sleep(0.1)
     seq = keras.models.load_model(path)
-    bar.progress(80)
-    time.sleep(0.1)
+    nn.predict(seq)
+    d = {
+        'actual':nn.actual_prices,
+        'predicted':nn.predicted_prices,
+        'Date':stk_data['Date']
+    }
+    df = pd.DataFrame(data=d)
+    fig1 = px.line(data_frame=df, x='Date', y='actual')
+    st.plotly_chart(fig)
+    fig2 = px.line(data_frame=df, x='Date', y='predicted')
+    st.plotly_chart(fig)
+
+    res = nn.results()
+    st.write(res['r2'])
+    st.write(res['prediction'])
     bar.progress(100)
     st.success('Please head to the results page to see your results')
 
 def rslt():
-    stk_data = pd.read_csv('stk_data.csv')
-    stk_tik = {'stk': stks[stk_data.columns[-1]]}
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
-    cur.execute('select path from models where tik=:stk', stk_tik)
-    path = cur.fetchall()[0][0]
-    seq = keras.models.load_model(path)
-    nn = Model()
-    nn.predict(seq)
-    df = pd.DataFrame()
-    df['actual'] = nn.actual_prices
-    df['predicted'] = nn.predicted_prices
-    df['Date'] = stk_data['Date']
-    fig = px.line(data_frame=df, x='Date', y=df.columns[1:])
-    st.plotly_chart(fig)
-    res = nn.results()
-    st.write(res['r2'])
-    st.write(res['prediction'])
+    cur.execute('select * from history')
+    data = cur.fetchall()
+    st.write(data)
 
 def about():
     pass
