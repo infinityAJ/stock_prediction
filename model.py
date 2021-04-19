@@ -62,15 +62,6 @@ class Model:
     self.predicted_prices = self.model.predict(self.x_test)
     self.predicted_prices = self.scaler.inverse_transform(self.predicted_prices)
 
-  def plotting(self):
-    plt.plot(self.actual_prices, color = "black", label=f"Actual {company} price")
-    plt.plot(self.predicted_prices, color='green', label=f'Predicted {company} prices')
-    plt.title(f"{company} Share Price")
-    plt.xlabel('Time')
-    plt.ylabel(f'{company} Share Price')
-    plt.legend()
-    plt.show()
-
   def results(self):
     prediction_days = 60
     self.real_data = [
@@ -81,5 +72,6 @@ class Model:
       self.real_data, (self.real_data.shape[0], self.real_data.shape[1], 1))
     prediction = self.model.predict(self.real_data)
     prediction = self.scaler.inverse_transform(prediction)
-    r2 = r2_score(self.actual_prices, self.predicted_prices)
+    prediction = round(prediction[0][0], 2)
+    r2 = round(r2_score(self.actual_prices, self.predicted_prices)*100)
     return {'r2': r2,'prediction': prediction}

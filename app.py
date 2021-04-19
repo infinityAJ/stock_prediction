@@ -82,12 +82,16 @@ def predict():
     st.write(res['r2'])
     st.write(res['prediction'])
     bar.progress(100)
+    db_data = (dt.datetime.now, stk_tik['stk'], res['r2'], res['prediction'])
+    cur.execute('insert into history values(?,?,?,?)', db_data)
     st.success('Please head to the results page to see your results')
 
 def rslt():
+    stk_data = pd.read_csv('stk_data.csv')
+    stk_tik = {'stk': stks[stk_data.columns[-1]]}
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
-    cur.execute('select * from history')
+    cur.execute('select * from history where company=:stk', stk_tik)
     data = cur.fetchall()
     st.write(data)
 
