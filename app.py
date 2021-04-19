@@ -90,7 +90,7 @@ def rslt():
     df = pd.DataFrame(data, columns=['date', 'ticker', 'prediction', 'accuracy'])
     df.date = [x.split()[0] for x in df.date]
     df.accuracy = [str(x)+'%' for x in df.accuracy]
-    st.table(data)
+    st.table(df)
 
 def about():
     pass
