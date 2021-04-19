@@ -73,9 +73,8 @@ class Model:
     data['prices'] = self.predicted_prices
     data['state'] = 'predicted'
     data = data.append(predicted, ignore_index=True)
-    print(data)
-    fig = px.line(data_frame = data, x='Date', y='prices', line_group='state', color='state')
-    return fig
+    #fig = px.line(data_frame = data, x='Date', y='prices', line_group='state', color='state')
+    return data
 
   def results(self):
     prediction_days = 60
