@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pandas_datareader as web
 import datetime as dt
+import plotly.express as px
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
@@ -61,6 +62,19 @@ class Model:
     self.model = model
     self.predicted_prices = self.model.predict(self.x_test)
     self.predicted_prices = self.scaler.inverse_transform(self.predicted_prices)
+
+  def plotting(self):
+    data = pd.DataFrame()
+    data['Date'] = self.test_data['Date']
+    data['prices'] = self.actual_prices
+    data['state'] = 'actual'
+    predicted = pd.DateFrame()
+    predicted['Date'] = self.test_data['Date']
+    data['prices'] = self.predicted_prices
+    data['state'] = 'predicted'
+    data = data.add(predicted, axis=0)
+    fig = px.line(data, x='Date', y='prices', line_group='state', color='state')
+    return fig
 
   def results(self):
     prediction_days = 60
