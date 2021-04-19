@@ -68,7 +68,7 @@ class Model:
     data['Date'] = self.test_data['Date']
     data['prices'] = self.actual_prices
     data['state'] = 'actual'
-    predicted = pd.DateFrame()
+    predicted = pd.DataFrame()
     predicted['Date'] = self.test_data['Date']
     data['prices'] = self.predicted_prices
     data['state'] = 'predicted'
