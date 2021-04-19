@@ -74,9 +74,9 @@ def predict():
     df['actual'] = nn.actual_prices
     df['predicted'] = nn.predicted_prices
     fig1 = px.line(data_frame=df, y='actual')
-    st.plotly_chart(fig)
+    st.plotly_chart(fig1)
     fig2 = px.line(data_frame=df, y='predicted')
-    st.plotly_chart(fig)
+    st.plotly_chart(fig2)
 
     res = nn.results()
     st.write(res['r2'])
