@@ -70,11 +70,9 @@ def predict():
     bar.progress(70)
     seq = keras.models.load_model(path)
     nn.predict(seq)
-    d = {
-        'actual':nn.actual_prices,
-        'predicted':nn.predicted_prices
-    }
-    df = pd.DataFrame(data=d)
+    df = pd.DataFrame()
+    df['actual'] = nn.actual_prices
+    df['predicted'] = nn.predicted_prices
     fig1 = px.line(data_frame=df, y='actual')
     st.plotly_chart(fig)
     fig2 = px.line(data_frame=df, y='predicted')
