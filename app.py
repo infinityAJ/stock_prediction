@@ -87,6 +87,10 @@ def rslt():
     cur = conn.cursor()
     cur.execute('select * from history')
     data = cur.fetchall()
+    df = pd.DataFrame(data, columns=['date', 'ticker', 'prediction', 'accuracy'])
+    df.date = [x.split()[0] for x in df.date]
+    df.accuracy = [str(x)+'%' for x in df.accuracy]
+    df.ticker = [stks[x] for x in df.ticker]
     st.table(data)
 
 def about():
