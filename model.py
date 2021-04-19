@@ -72,8 +72,8 @@ class Model:
     predicted['Date'] = self.test_data['Date']
     data['prices'] = self.predicted_prices
     data['state'] = 'predicted'
-    data = data.add(predicted, axis=0)
-    fig = px.line(data, x='Date', y='prices', line_group='state', color='state')
+    data = data.append(predicted, ignore_index=True)
+    fig = px.line(data_frame = data, x='Date', y='prices', line_group='state', color='state')
     return fig
 
   def results(self):
