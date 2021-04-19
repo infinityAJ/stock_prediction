@@ -67,18 +67,14 @@ def predict():
     cur.execute('select path from models where tik=:stk', stk_tik)
     path = cur.fetchall()[0][0]
     
-    bar.progress(70)
+    bar.progress(50)
     seq = keras.models.load_model(path)
     nn.predict(seq)
     df = pd.DataFrame()
-    df['actual'] = nn.actual_prices
-    df['predicted'] = nn.predicted_prices
-    fig1 = px.line(data_frame=df, y='actual')
-    st.plotly_chart(fig1)
-    fig2 = px.line(data_frame=df, y='predicted')
-    st.plotly_chart(fig2)
-    fig3 = nn.plotting()
-    st.plotly_chart(fig3)
+    
+    fig = nn.plotting()
+    st.plotly_chart(fig)
+    bar.progress(70)
 
     res = nn.results()
     st.write(res['r2'])
@@ -91,7 +87,7 @@ def rslt():
     cur = conn.cursor()
     cur.execute('select * from history')
     data = cur.fetchall()
-    st.write(data)
+    st.table(data)
 
 def about():
     pass
