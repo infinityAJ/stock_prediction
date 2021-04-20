@@ -86,4 +86,4 @@ class Model:
     prediction = self.model.predict(self.real_data)
     prediction = self.scaler.inverse_transform(prediction)
     r2 = round(r2_score(self.actual_prices, self.predicted_prices)*100)
-    return {'r2': r2,'prediction': prediction}
+    return {'r2': r2,'prediction': prediction[0][0]}
