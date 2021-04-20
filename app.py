@@ -71,7 +71,7 @@ def predict():
     bar.progress(70)
     res = nn.results()
     price = res['prediction']
-    price = round(price, 2)
+    price = round(float(price), 2)
     st.success(f"""Prediced price for tomorrow is {price}$ with an
         accuracy of {res['r2']}%.""")
     msg.text('Done...')
