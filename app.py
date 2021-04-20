@@ -3,6 +3,7 @@ from config import *
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
 import pandas_datareader as web
 from model import Model
 from tensorflow import keras
@@ -10,7 +11,7 @@ import sqlite3 as sql
 import time
 
 st.sidebar.title(PROJECT_NAME)
-choice = st.sidebar.radio("Project Menu", MENU_OPTIONS)
+choice = st.sidebar.radio("Project Menu", MENU)
 chart_data = pd.DataFrame(np.random.randn(50, 3), columns=['a', 'b', 'c'])
 
 def home():
@@ -21,7 +22,6 @@ def home():
     st.write("""this model uses a Recurrent Neural Network to predict next step
     of a time-series data which in our case is history of a company's stock
     prices.""")
-    st.header('there is a change.')
 
 def stck():
     company = st.selectbox(
@@ -42,11 +42,13 @@ def data():
     st.write(stk_data)
 
 def grph():
-    stk_data = pd.read_csv('stk_data.csv')
-    st.title(f"{stk_data.columns[-1]} stock price's graph")
+    df = pd.read_csv('stk_data.csv')
+    st.title(f"{df.columns[-1]} stock price's graph")
     st.header('')
-    fig = px.line(data_frame=stk_data, x='Date', y='Close',
-                  labels={'Close':'Price in $'})
+    fig = go.Figure(data=[go.Candlestick(x=df['Date'],open=df['Open'],
+                high=df['High'],low=df['Low'],close=df['Close'])])
+##    fig = px.line(data_frame=stk_data, x='Date', y='Close',
+##                  labels={'Close':'Price in $'})
     st.plotly_chart(fig)
 
 def predict():
@@ -82,7 +84,7 @@ def predict():
     bar.progress(100)
     st.success('Please head to the results page to see your results')
 
-def rslt():
+def hist():
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
     cur.execute('select * from history')
@@ -95,17 +97,17 @@ def rslt():
 def about():
     pass
 
-if choice == 'home':
+if choice == MENU[0]:
     home()
-if choice == 'choose stock':
+if choice == MENU[1]:
     stck()
-if choice == 'view data':
+if choice == MENU[2]:
     data()
-if choice == 'visualize data':
+if choice == MENU[3]:
     grph()
-if choice == 'make predictions':
+if choice == MENU[4]:
     predict()
-if choice == 'visualize results':
-    rslt()
-if choice == 'about':
+if choice == MENU[5]:
+    hist()
+if choice == MENU[6]:
     about()
