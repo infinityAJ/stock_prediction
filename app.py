@@ -48,32 +48,31 @@ def grph():
 def predict():
     stk_data = pd.read_csv('stk_data.csv')
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
-    
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
-    st.header('creating and training the neural network')
+    msg = 'Reading databases...'
+    
     bar = st.progress(0)
+    st.write(msg)
     time.sleep(1)
-    
     nn = Model()
-    st.write('Training the Neural Network')
-    
     conn = sql.connect('stock_smart.db')
     cur = conn.cursor()
     cur.execute('select path from models where tik=:stk', stk_tik)
     path = cur.fetchall()[0][0]
+    msg = 'Loading Neural Network...'
     
     bar.progress(50)
     seq = keras.models.load_model(path)
     nn.predict(seq)
-    df = pd.DataFrame()
-    
+    msg = 'Plotting calculations...'
     fig = nn.plotting()
     st.plotly_chart(fig)
+    
     bar.progress(70)
-
     res = nn.results()
-    st.success(f"""prediced price for tomorrow is {res['prediction']}$ with an
+    st.success(f"""Prediced price for tomorrow is {res['prediction']}$ with an
         accuracy of {res['r2']}%.""")
+    msg = 'Done...'
     bar.progress(100)
 
 def hist():
