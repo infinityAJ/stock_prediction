@@ -49,11 +49,10 @@ def predict():
     stk_data = pd.read_csv('stk_data.csv')
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
-    msg = st.empty()
-    msg.text('Reading databases...')
     
     bar = st.progress(0)
-    st.write(msg)
+    msg = st.empty()
+    msg.text('Reading databases...')
     time.sleep(1)
     nn = Model()
     conn = sql.connect('stock_smart.db')
