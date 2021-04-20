@@ -25,7 +25,7 @@ def home():
             <li>This app even has some past predictions and their accuracy recorded.<br>
             you can check that out on the 'Show history' page.</li>
         </ul>
-    """)
+    """, unsafe_allow_html=True)
 ##    st.write('You can predict any stock\'s future price out of the given companies.')
 ##    st.write('To choose stock go to \'Choose company\' page from the sidebar.')
 ##    st.write('App will still work if you don\'t choose a stock, default chosen'+
