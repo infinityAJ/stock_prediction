@@ -21,7 +21,7 @@ def home():
             <li>You can predict any stock's future price out of the given companies.</li>
             <li>To choose stock go to 'Choose company' page from the sidebar.</li>
             <li>App will still work if you don't choose a stock, default chosen company is 'Facebook'.</li>
-            <li>To make predictions, you can head directly to the 'Calculate results'.<li>
+            <li>To make predictions, you can head directly to the 'Calculate results'.</li>
             <li>This app even has some past predictions and their accuracy recorded.<br>
             you can check that out on the 'Show history' page.</li>
         </ul>
