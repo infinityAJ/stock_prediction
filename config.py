@@ -10,6 +10,7 @@ MENU = [
     'Show history',
     'About'
 ]
+
 stks = {
     'Facebook':'FB',
     'Apple':'AAPL',
@@ -33,5 +34,6 @@ stks = {
     'Singapore Telecommunications Limited':'Z74.SI',
     'FuelCell Energy, Inc.':'FCEL',
     }
+
 start = dt.datetime(2013, 1, 1)
 end = dt.datetime.now()

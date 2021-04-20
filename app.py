@@ -24,31 +24,25 @@ def home():
     prices.""")
 
 def stck():
-    company = st.selectbox(
-        'Select a company',
-        tuple(stks.keys()))
+    company = st.selectbox('Select a company', tuple(stks.keys()))
     stk_tik = stks[company]
     if stk_tik:
         stk_data = web.DataReader(stk_tik, 'yahoo', start, end)
         stk_data[company] = 0
-        stk_data.to_csv('stk_data.csv',index=True)
-        st.success("stock ticker recorded, you may go to 'view data' page now")
+        stk_data.to_csv('stk_data.csv', index=True)
+        st.success("company recorded successfully.")
 
 def data():
     stk_data = pd.read_csv('stk_data.csv')
     st.title(f"{stk_data.columns[-1]} stock's raw data")
-    st.header('')
     stk_data = stk_data.drop(stk_data.columns[-1], axis=1)
     st.write(stk_data)
 
 def grph():
     df = pd.read_csv('stk_data.csv')
     st.title(f"{df.columns[-1]} stock price's graph")
-    st.header('')
     fig = go.Figure(data=[go.Candlestick(x=df['Date'],open=df['Open'],
                 high=df['High'],low=df['Low'],close=df['Close'])])
-##    fig = px.line(data_frame=stk_data, x='Date', y='Close',
-##                  labels={'Close':'Price in $'})
     st.plotly_chart(fig)
 
 def predict():
@@ -56,7 +50,6 @@ def predict():
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
     
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
-    st.header('')
     st.header('creating and training the neural network')
     bar = st.progress(0)
     time.sleep(1)
@@ -79,10 +72,9 @@ def predict():
     bar.progress(70)
 
     res = nn.results()
-    st.write(res['r2'])
-    st.write(res['prediction'])
+    st.success(f"""prediced price for tomorrow is {res['prediction']} with an
+        accuracy of {res['r2']}""")
     bar.progress(100)
-    st.success('Please head to the results page to see your results')
 
 def hist():
     conn = sql.connect('stock_smart.db')
