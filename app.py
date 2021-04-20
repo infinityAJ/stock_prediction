@@ -15,15 +15,14 @@ choice = st.sidebar.radio("Project Menu", MENU)
 chart_data = pd.DataFrame(np.random.randn(50, 3), columns=['a', 'b', 'c'])
 
 def home():
-    st.title('Stock Smart')
+    st.header('Stock Smart')
     st.subheader('Featuring future stock price prediction')
-    st.write("""The project Stock Smart uses stock price prediction model to
+    st.write("""The project Stock Smart uses price prediction model to
     predict future stock prices of a given company.""")
-    st.write("""this model uses a Recurrent Neural Network to predict next step
-    of a time-series data which in our case is history of a company's stock
-    prices.""")
-    st.write('the Neural network we are using maybe represented like this-')
+    st.write('The Neural network we are using to predict prices'+
+             ' maybe represented like this-')
     st.image('img.png')
+    st.write('However, our neural network uses two hidden layer instead of one.')
 
 def stck():
     company = st.selectbox('Select a company', tuple(stks.keys()))
