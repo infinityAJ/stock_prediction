@@ -15,14 +15,15 @@ choice = st.sidebar.radio("Project Menu", MENU)
 chart_data = pd.DataFrame(np.random.randn(50, 3), columns=['a', 'b', 'c'])
 
 def home():
-    st.header('Stock Smart')
-    st.subheader('Featuring future stock price prediction')
-    st.write("""The project Stock Smart uses price prediction model to
-    predict future stock prices of a given company.""")
-    st.write('The Neural network we are using to predict prices'+
-             ' maybe represented like this-')
-    st.image('img.png')
-    st.write('However, our neural network uses two hidden layer instead of one.')
+    st.title('Home')
+    st.write('You can predict any stock\'s future price out of the given companies.')
+    st.write('To choose stock go to \'Choose company\' page from the sidebar.')
+    st.write('App will still work if you don\'t choose a stock, default chosen'+
+             'company is \'Facebook\'.')
+    st.write('To make predictions, you can head directly to the \'Calculate results\'')
+    st.write('This app even has some past predictions and their accuracy recorded.'+
+             'you can check that out on the \'Show history\' page.')
+    st.success('Thank you for using \'Stock Smart\'.')
 
 def stck():
     company = st.selectbox('Select a company', tuple(stks.keys()))
@@ -89,7 +90,14 @@ def hist():
     st.table(df)
 
 def about():
-    pass
+    st.title('About Stock Smart')
+    st.subheader('Featuring future stock price prediction')
+    st.write("""The project Stock Smart uses stock price prediction model to
+    predict future stock prices of a given company.""")
+    st.image('img.png')
+    st.write("this model uses a Recurrent Neural Network (which may be"+
+             " represented like above figure) to predict next stepof a time-"+
+             "series data which in our case is history of a company's stock prices.")
 
 if choice == MENU[0]:
     home()
