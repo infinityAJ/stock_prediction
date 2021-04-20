@@ -18,10 +18,12 @@ def home():
     st.title('Stock Smart')
     st.subheader('Featuring future stock price prediction')
     st.write("""The project Stock Smart uses stock price prediction model to
-    predict future stock prices of a give company.""")
+    predict future stock prices of a given company.""")
     st.write("""this model uses a Recurrent Neural Network to predict next step
     of a time-series data which in our case is history of a company's stock
     prices.""")
+    st.write('the Neural network we are using maybe represented like this-')
+    st.image('img.png')
 
 def stck():
     company = st.selectbox('Select a company', tuple(stks.keys()))
