@@ -16,13 +16,23 @@ chart_data = pd.DataFrame(np.random.randn(50, 3), columns=['a', 'b', 'c'])
 
 def home():
     st.title('Home')
-    st.write('You can predict any stock\'s future price out of the given companies.')
-    st.write('To choose stock go to \'Choose company\' page from the sidebar.')
-    st.write('App will still work if you don\'t choose a stock, default chosen'+
-             'company is \'Facebook\'.')
-    st.write('To make predictions, you can head directly to the \'Calculate results\'')
-    st.write('This app even has some past predictions and their accuracy recorded.'+
-             'you can check that out on the \'Show history\' page.')
+    st.markdown("""
+        <ul>
+            <li>You can predict any stock's future price out of the given companies.</li>
+            <li>To choose stock go to 'Choose company' page from the sidebar.</li>
+            <li>App will still work if you don't choose a stock, default chosen company is 'Facebook'.</li>
+            <li>To make predictions, you can head directly to the 'Calculate results'.<li>
+            <li>This app even has some past predictions and their accuracy recorded.<br>
+            you can check that out on the 'Show history' page.</li>
+        </ul>
+    """)
+##    st.write('You can predict any stock\'s future price out of the given companies.')
+##    st.write('To choose stock go to \'Choose company\' page from the sidebar.')
+##    st.write('App will still work if you don\'t choose a stock, default chosen'+
+##             'company is \'Facebook\'.')
+##    st.write('To make predictions, you can head directly to the \'Calculate results\'')
+##    st.write('This app even has some past predictions and their accuracy recorded.'+
+##             'you can check that out on the \'Show history\' page.')
     st.success('Thank you for using \'Stock Smart\'.')
 
 def stck():
