@@ -72,8 +72,9 @@ def predict():
     bar.progress(70)
 
     res = nn.results()
+    res['prediction'] = round(res['prediction'], 2)
     st.success(f"""prediced price for tomorrow is {res['prediction']} with an
-        accuracy of {res['r2']}""")
+        accuracy of {res['r2']}%""")
     bar.progress(100)
 
 def hist():
