@@ -49,7 +49,8 @@ def predict():
     stk_data = pd.read_csv('stk_data.csv')
     stk_tik = {'stk': stks[stk_data.columns[-1]]}
     st.title(f'Make future predictions for {stk_data.columns[-1]}')
-    msg = 'Reading databases...'
+    msg = st.empty()
+    msg.text('Reading databases...')
     
     bar = st.progress(0)
     st.write(msg)
@@ -59,12 +60,12 @@ def predict():
     cur = conn.cursor()
     cur.execute('select path from models where tik=:stk', stk_tik)
     path = cur.fetchall()[0][0]
-    msg = 'Loading Neural Network...'
+    msg.text('Loading Neural Network...')
     
     bar.progress(50)
     seq = keras.models.load_model(path)
     nn.predict(seq)
-    msg = 'Plotting calculations...'
+    msg.text('Plotting calculations...')
     fig = nn.plotting()
     st.plotly_chart(fig)
     
@@ -72,7 +73,7 @@ def predict():
     res = nn.results()
     st.success(f"""Prediced price for tomorrow is {res['prediction']}$ with an
         accuracy of {res['r2']}%.""")
-    msg = 'Done...'
+    msg.text('Done...')
     bar.progress(100)
 
 def hist():
